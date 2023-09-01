@@ -22,12 +22,72 @@ We welcome many different types of contributions and not all of them need a Pull
 
 ## Getting started
 
-_TO BE EDITED: This section explains how to build the project from source, including Development Environment Setup, Build, Run and Test._
+This section provides a comprehensive guide on how to contribute to the project by setting up your development environment, and ensuring code quality before submitting a pull request. Though the project is in Python, which simplifies the build process, it's crucial to follow these guidelines for a smooth collaboration.
 
-_Provide information about how someone can find your project, get set up, build the code, test it, and submit a pull request successfully without having to ask any questions. Also include common errors people run into, or useful scripts they should run._
+### Development Environment Setup
 
-_List any tests that the contributor should run / or testing processes to follow before submitting. Describe any automated and manual checks performed by reviewers._
+1. **Clone the Repository:** Clone the repository to your local machine using the following command in your terminal:
 
+    ```bash
+    git clone https://github.com/vmware-labs/syscall-failure-analyzer
+    ```
+
+2. **Navigate to the Project Directory:**
+
+    ```bash
+    cd your-repository
+    ```
+
+3. **Install Required Packages:** Use `pip` to install the required Python packages:
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+### Ensuring Code Quality
+
+Before submitting a pull request, make sure that your code adheres to the following guidelines:
+
+- **No MyPy Warnings:** Your code should not produce any MyPy warnings. Run the following command to check:
+
+    ```bash
+    mypy .
+    ```
+
+    If you see any warnings, correct the type annotations to resolve them before submitting your pull request.
+
+### Submitting a Pull Request
+
+1. **Create a New Branch:**
+
+    ```bash
+    git checkout -b your-feature-branch
+    ```
+
+2. **Add and Commit Your Changes:**
+
+    ```bash
+    git add .
+    git commit --signoff -m "Your commit message"
+    ```
+
+3. **Push the Changes:**
+
+    ```bash
+    git push origin your-feature-branch
+    ```
+
+4. Navigate to the original repository and create a new pull request. Compare the original `main` or `master` branch with your `your-feature-branch`.
+
+5. After submitting the pull request, maintainers will review your changes. Upon approval, your code will be merged into the main codebase.
+
+### Common Issues
+
+Currently, there are no common issues to be aware of. As the project evolves, this section will be updated accordingly.
+
+### Testing
+
+As of now, the project does not have automated tests. Please disregard this section until tests are added to the repository.
 
 ## Contribution Flow
 
@@ -54,21 +114,10 @@ Before submitting your pull request, we advise you to use the following:
 
 For specifics on what to include in your report, please follow the guidelines in the issue and pull request templates when available.
 
-_TO BE EDITED: Add additional information if needed._
-
 
 ## Ask for Help
-
-_TO BE EDITED: Provide information about the channels you use to communicate (i.e. Slack, IRC, Discord, etc)_
 
 The best way to reach us with a question when contributing is to ask on:
 
 * The original GitHub issue
-* The developer mailing list
-* Our Slack channel
-
-
-## Additional Resources
-
-_Optional_
 

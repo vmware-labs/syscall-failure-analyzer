@@ -1,0 +1,16 @@
+# Copyright 2023 VMware, Inc.
+# SPDX-License-Identifier: BSD-2-Clause
+angr==9.2.25
+ansicolors==1.1.8
+capstone==4.0.2
+claripy==9.2.25
+cle==9.2.25
+numpy==1.23.5
+lz4==4.3.2
+pyelftools==0.29
+psutil==5.9.4
+pyseccomp==0.1.2
+pytest==7.2.2
+python_ptrace==0.9.8
+setuptools==59.6.0
+tqdm==4.64.1

@@ -1,0 +1,134 @@
+# Copyright 2023 VMware, Inc.
+# SPDX-License-Identifier: BSD-2-Clause
+#
+# Some of those are not really pure but we want to ignore their
+# side-effects.
+_raw_spin_lock
+_raw_spin_unlock
+trace_event_raw_event_sys_enter
+schedule
+__schedule
+__cond_resched
+perf_prepare_sample
+__perf_event_header__init_id
+# __rcu_read[un]lock are used by ftrace which means we might lost calls to
+# them.
+__rcu_read_lock
+__rcu_read_unlock
+sched_clock
+sched_clock_cpu
+perf_output_copy
+perf_output_sample
+# Tracing ptrace and exit/entry is wasteful
+ptrace_do_notify
+ptrace_notify
+syscall_trace_enter
+__traceiter_sys_exit
+syscall_exit_work
+syscall_exit_to_user_mode
+# Tracing locks is mostly unnecessary (it might in some corner cases cause
+# simulation to fail though.)
+up_read
+up_write
+down_read
+down_write
+down_write_killable
+_raw_spin_lock_irqsave
+_raw_spin_unlock_irqrestore
+# Memory allocation is just overhead
+kmem_cache_alloc
+kmem_cache_free
+trampoline_handler # Special we still want the callees
+__kmalloc
+kfree
+ptrace_stop
+#__kmalloc_track_caller 
+mutex_lock
+mutex_unlock
+ptrace_notify
+irq_enter_rcu
+call_rcu
+syscall_exit_work # After the syscall was already executed
+scheduler_tick
+update_process_times
+tick_sched_handle
+tick_periodic
+### CHECK - we ignore them to make kprobe more robust and avoid kernel crashes
+hrtick_update
+rcu_core
+rcu_note_context_switch
+rcu_core_si
+run_rebalance_domains
+profile_tick
+idle_cpu
+__do_softirq
+__kmem_cache_free
+vprintk
+invoke_rcu_core
+module_put
+putname
+nohz_balance_exit_idle
+update_cfg_group
+load_balance
+check_cfs_rq_runtime
+update_blocked_averages
+rebalance_domains
+_printk
+hrtimer_interrupt
+__hrtimer_run_queues
+tick_sched_timer
+tick_sched_do_timer
+irq_exit_rcu
+lapic_next_deadline
+sysvec_apic_timer_interrupt
+cgroup_rstat_updated
+__destroy_inode
+truncate_inode_pages_range
+__const_udelay
+delay_tsc
+destroy_inode
+_raw_spin_unlock_irq
+truncate_inode_pages_final
+__inode_wait_for_writeback
+evict
+__inode_wait_for_writeback
+iput
+perf_trace_buf_alloc
+perf_trace_sys_exit
+perf_trace_run_bpf_submit
+trace_call_bpf
+migrate_disable
+memcg_account_kmem
+perf_iterate_ctx
+perf_event_switch_output
+__wake_up
+local_clock
+native_sched_clock
+perf_iterate_sb
+syscall_enter_from_user_mode
+mntput
+dput
+mntput_no_expire
+rb_erase
+wakeup_source_unregister
+release_sock
+__check_object_size
+__check_object_size.part.0
+current_time
+ktime_get_coarse_real_ts64
+ext4_inode_csum
+__srcu_read_lock
+__srcu_read_unlock
+fsnotify_destroy_marks
+stop_this_handle
+mnt_drop_write
+dentry_unlink_inode
+# Some should be non-pure
+crypto_shash_update
+chacha_permute
+ep_remove
+ext4_fc_stop_update
+# Need to figure out why the following is not figured out automatically
+rcu_read_unlock_strict
+__wait_for_common
+percpu_down_write
