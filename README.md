@@ -21,7 +21,7 @@ there might be subtle differences.
 If you are using another Linux distribution or a different package manager, the
 package names and installation steps may vary. In such cases, we encourage you
 to contribute by documenting the steps for your specific distribution in the
-`CONTRIBUTING_DCO.md` file.
+[CONTRIBUTING_DCO.md](CONTRIBUTING_DCO.md) file.
 
 Feel free to integrate this snippet into your documentation where it fits best.
 
@@ -182,7 +182,7 @@ python3 ./syscall-failure-analyzer.py -h
 As of now, the project is in active development, and comprehensive
 documentation is in the works. For the time being, you can find the most
 relevant information about how to use and contribute to the project in this
-`README.md` and in the `CONTRIBUTING_DCO.md` files.
+[README.md](README.md) and in the [CONTRIBUTING_DCO.md](CONTRIBUTING_DCO.md) files.
 
 If you have specific questions or encounter issues, feel free to open an issue
 on GitHub, and we'll do our best to assist you.
@@ -195,7 +195,7 @@ contribute, please see the "Contributing" section for guidelines.
 The syscall-failure-analyzer project team welcomes contributions from the community. Before you start working with syscall-failure-analyzer, please
 read our [Developer Certificate of Origin](https://cla.vmware.com/dco). All contributions to this repository must be
 signed as described on that page. Your signature certifies that you wrote the patch or have the right to pass it on
-as an open-source patch. For more detailed information, refer to [CONTRIBUTING.md](CONTRIBUTING.md).
+as an open-source patch. For more detailed information, refer to [CONTRIBUTING_DCO.md](CONTRIBUTING_DCO.md).
 
 ## License
 
