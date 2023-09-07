@@ -199,4 +199,4 @@ as an open-source patch. For more detailed information, refer to [CONTRIBUTING_D
 
 ## License
 
-This project is licensed under the BSD-2-Clause License. For more details, please see the [LICENSE.md](LICENSE.md) file in the root directory of this source tree.
+This project is licensed under the BSD-2-Clause License. For more details, please see the [LICENSE.md](LICENSE) file in the root directory of this source tree.
