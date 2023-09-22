@@ -35,7 +35,12 @@ Feel free to integrate this snippet into your documentation where it fits best.
    sudo apt install linux-tools-common linux-tools-generic linux-tools-`uname -r`
    ```
 
-2. Install the kernel debug symbols
+2. Install `libcapstone4` or `libcapstone3`.
+   ```bash
+   sudo apt install libcapstone4 || sudo apt install libcapstone3
+   ```
+
+3. Install the kernel debug symbols
    ```bash
    codename=$(lsb_release -c | awk  '{print $2}')
    sudo tee /etc/apt/sources.list.d/ddebs.list << EOF
@@ -51,7 +56,7 @@ Feel free to integrate this snippet into your documentation where it fits best.
    sudo apt install linux-image-`uname -r`-dbgsym
    ```
 
-3. *Recommended:* Installing the Linux source code is essential for any
+4. *Recommended:* Installing the Linux source code is essential for any
    meaningful analysis using syscall-failure-analyzer output. If you have access to the source code
    through a custom kernel or other means, this step can be skipped. Please note
    that while the source code is not required for syscall-failure-analyzer execution, it is necessary
@@ -61,13 +66,6 @@ Feel free to integrate this snippet into your documentation where it fits best.
    sudo apt-get install linux-source
    tar xvf /usr/src/linux-source-$(uname -r).tar.bz2
    cd linux-source-$(uname -r)
-   ```
-
-4. *Recommended:* It is recommended to install pypy3 as it can significantly speed
-   up the execution, especially for analysis purposes, in comparison to the stock
-   python3.
-   ```bash
-   sudo apt install pypy3
    ```
 
 - <u>Custom Kernels</u>:
@@ -98,29 +96,34 @@ tool itself with sudo permissions.
 #### Virtual Environment Setup
 
 To set up and run the project, it's advisable to use a Python virtual
-environment. The following steps assume you're using `pypy3` as recommended:
+environment.
 
-1. **Navigate to the Project Directory**
+1. **Install python3-venv package**
+   ```bash
+   sudo apt install python3-venv
+   ```
+
+2. **Navigate to the Project Directory**
     ```bash
     cd /path/to/syscall-failure-analyzer
     ```
 
-2. **Create a Virtual Environment**
+3. **Create a Virtual Environment**
     ```bash
-    pypy3 -m venv myvenv
+    python3 -m venv myvenv
     ```
 
-3. **Activate the Virtual Environment**
+4. **Activate the Virtual Environment**
     ```bash
     source myvenv/bin/activate
     ```
 
-4. **Install Required Packages**
+5. **Install Required Packages**
     ```bash
     pip install -r requirements.txt
     ```
 
-5. **Create a Symbolic Link for BCC**
+6. **Create a Symbolic Link for BCC**
 
     ```bash
     ln -s /usr/lib/python3/dist-packages/bcc myvenv/lib/python3.X/site-packages/bcc
