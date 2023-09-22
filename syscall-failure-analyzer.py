@@ -205,7 +205,7 @@ def main():
         kprobes = args.kprobes
         kcore = Kcore()
 
-        if kprobes and not IntelPTRecorder.cpu_supports_pt():
+        if not kprobes and not IntelPTRecorder.cpu_supports_pt():
             pr_msg("CPU does not support Intel PT", level="ERROR")
 
         recorder_cls = KProbesRecorder if kprobes else IntelPTRecorder
