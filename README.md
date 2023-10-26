@@ -126,10 +126,8 @@ environment.
 6. **Create a Symbolic Link for BCC**
 
     ```bash
-    ln -s /usr/lib/python3/dist-packages/bcc myvenv/lib/python3.X/site-packages/bcc
+    ln -s /usr/lib/python3/dist-packages/bcc myvenv/lib/$(python3 -c "import sys; print('python{}.{}'.format(sys.version_info.major, sys.version_info.minor))")/site-packages/bcc
     ```
-
-    **Note: Replace `python3.X` with your specific Python version.**
 
 #### Recording Syscall Failure
 
