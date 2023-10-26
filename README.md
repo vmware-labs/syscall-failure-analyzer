@@ -25,7 +25,7 @@ to contribute by documenting the steps for your specific distribution in the
 
 Feel free to integrate this snippet into your documentation where it fits best.
 
-1. Install `binutils`, `libcapstone3` and `bcc`, which are required for
+1. Install `binutils` and `bcc`, which are required for
    tracing and analysis.
    ```bash
    sudo apt install binutils libcapstone3 bpfcc-tools python3-bpfcc
