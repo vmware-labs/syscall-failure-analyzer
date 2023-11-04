@@ -196,13 +196,17 @@ class RetpolineProcedure(angr.SimProcedure):
         angr_mgr = control.angr_mgr
 
         current_state_ip = state_ip(state)
+        prev_state_ip = state.history and state.history.parent and state.history.parent.addr
 
         def in_retpoline(ip:int) -> bool:
             sym_name = angr_mgr.get_sym_name(ip)
             return (sym_name.startswith('__x86_indirect_thunk') or 
                     sym_name in {'__x86_return_thunk', 'zen_untrain_ret'})
- 
-        if current_state_ip == trace_from_ip:
+
+        # When using kprobes we skip the retpolines, but when using hardware tracer
+        # we keep them.
+        if (current_state_ip == trace_from_ip or
+            (not in_retpoline(trace_from_ip) and prev_state_ip == trace_from_ip)):
             # TODO: Handle the case in which the trace ends with a retpoline
             while in_retpoline(trace_to_ip):
                 control.next_branch()

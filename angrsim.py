@@ -152,6 +152,10 @@ class AngrSim:
         except ValueError:
             return True
 
+        # TODO: Move this to arch
+        if sym.name == '__x86_indirect_thunk_array':
+            return False
+
         #if self.angr_mgr.is_fastpath_to_out(s) or self.angr_mgr.is_fastpath_to_ret(s):
         #    return False
         if self.angr_mgr.is_skipped_sym(s):

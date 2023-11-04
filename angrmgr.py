@@ -652,6 +652,10 @@ class Angr:
             return
         if sym is None:
             return
+
+        # We have already set hooks for individual retpoline
+        if sym.name == '__x86_indirect_thunk_array':
+            return
         
         if sym not in self.code_hooks_done:
             def hook(sym: Symbol, insn:capstone.CsInsn, **kwargs):
