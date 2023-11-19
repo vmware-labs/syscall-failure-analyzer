@@ -305,8 +305,12 @@ class Ftrace:
         self.__available_funcs = {l.strip() for l in txt.splitlines()}
 
     def __is_available_filter_function(self, sym:Symbol) -> bool:
+        if '.' not in sym.name:
+            return sym.name in self.available_funcs
+
         base_name = sym.name.split('.')[0]
-        return base_name in self.available_funcs
+        return (sym.name in self.available_funcs or
+                base_name in self.available_funcs)
 
     @staticmethod
     def is_available_filter_function(sym:Symbol) -> bool:
