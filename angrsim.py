@@ -361,9 +361,10 @@ class AngrSim:
         for s in cmov_states:
             ip = Angr.state_ip(s)
             insn = self.angr_mgr.get_insn(ip)
-            taken_predicated_mov = not (s.control.current_branch['from_ip'] == ip and
-                                    s.control.current_branch['to_ip'] == self.angr_mgr.next_insn_addr(insn))
-            if not taken_predicated_mov:
+            matched_entry = (s.control.current_branch['from_ip'] == ip and
+                             s.control.current_branch['to_ip'] == self.angr_mgr.next_insn_addr(insn))
+            taken_predicated_mov = not matched_entry
+            if matched_entry:
                 s.control.next_branch()
             successors = arch.predicated_mov_constraint(s, taken_predicated_mov, insn)
             self.simgr.active.remove(s)

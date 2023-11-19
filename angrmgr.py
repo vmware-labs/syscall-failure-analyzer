@@ -94,6 +94,7 @@ class Angr:
         self.hooked_rep_string_addr:Set[int] = set()
         self.md.detail = True
         self.parse_interrupt_table()
+        arch.init_symbols(self.proj)
 
         self.no_probe_sym_names = (ignore_funcs_pure|ignore_funcs_nopure|
                                     userspace_copy_funcs|direct_sym_libc_hooks)

@@ -344,14 +344,25 @@ class ArchX86(Arch):
     def is_indirect_branch_target(self, insn) -> bool:
         return insn.id in {capstone.x86.X86_INS_ENDBR32,
                            capstone.x86.X86_INS_ENDBR64}
-   
+
     def is_indirect_branch_insn(self, insn) -> bool:
         return (self.is_indirect_jmp_insn(insn) or
                 self.is_indirect_call_insn(insn))
 
-    def is_ret_insn(self, insn:capstone.CsInsn) -> bool:
+    def __is_ret_insn(self, insn:capstone.CsInsn) -> bool:
         return capstone.x86.X86_GRP_RET in insn.groups
-    
+
+    def is_ret_insn(self, insn:capstone.CsInsn) -> bool:
+        if self.__is_ret_insn(insn):
+            return True
+
+        # Detect retthunks as effectively ret instructions
+        if self.is_direct_jmp_insn(insn):
+            target = self.get_direct_branch_target(insn)
+            return target == self.return_thunk_addr
+
+        return False
+
     def is_call_insn(self, insn:capstone.CsInsn) -> bool:
         return capstone.x86.X86_GRP_CALL in insn.groups
     
@@ -574,6 +585,15 @@ class ArchX86(Arch):
                 idt_handlers[i] = handler_addr
 
         return idt_handlers
+
+    def init_symbols(self, proj:angr.Project) -> None:
+        # get the symbol for __x86_return_thunk
+        try:
+            return_thunk_sym = proj.loader.find_symbol('__x86_return_thunk')
+        except KeyError:
+            return_thunk_sym = None
+
+        self.return_thunk_addr = return_thunk_sym and return_thunk_sym.rebased_addr
 
     def is_exception_vector(self, vector:int) -> bool:
         return vector < 32

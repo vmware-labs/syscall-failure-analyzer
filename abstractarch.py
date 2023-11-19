@@ -198,6 +198,10 @@ class Arch(ABC):
         pass
 
     @abstractmethod
+    def init_symbols(self, proj:angr.Project) -> None:
+        pass
+
+    @abstractmethod
     def is_exception_vector(self, vector:int) -> bool:
         pass
 
