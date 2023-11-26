@@ -6,6 +6,7 @@ import time
 import copy
 import angr
 import capstone
+import claripy
 from cle.backends import Symbol
 from arch import arch
 from angrmgr import Angr
@@ -154,6 +155,10 @@ class AngrSim:
 
         # TODO: Move this to arch
         if sym.name == '__x86_indirect_thunk_array':
+            return False
+
+        # XXX: hack
+        if sym.name in {'_copy_to_user'}:
             return False
 
         #if self.angr_mgr.is_fastpath_to_out(s) or self.angr_mgr.is_fastpath_to_ret(s):
@@ -534,16 +539,42 @@ class AngrSim:
             if insn is None:
                 continue
 
+            angr_mgr = self.angr_mgr
+
             # Again, we have Intel PT shenanigans to care for. The from_ip might be zero/None
             # because of retpoline and friends for some reason.
             if ((c.diverged or Angr.state_ip(state) is None) and
                 (arch.is_indirect_branch_insn(insn) or arch.is_ret_insn(insn)) and
                  (trace_from_ip == jump_source or not trace_from_ip)):
 
-                # Ensure the diverged states would succeed backtracking later
-                for diverged_state in [state] + simgr.stashes['diverged']:
-                    rip_reg = state.registers.load(arch.ip_reg_name)
-                    diverged_state.add_constraints(rip_reg == trace_to_ip)
+                # Ensure the diverged states would succeed backtracking later.
+                #
+                # For now only support registers, but anyhow memory is not used today
+                # due to retpolines
+                if trace_to_ip and len(insn.operands) > 0 and insn.operands[0].type == capstone.CS_OP_REG:
+                    reg_id = insn.operands[0].value.reg
+                    reg_name = insn.reg_name(reg_id)
+                    rip_reg = state.registers.load(reg_name)
+                    for diverged_state in [state] + simgr.stashes['diverged']:
+                        diverged_state.add_constraints(rip_reg == trace_to_ip)
+
+                if arch.is_indirect_call_insn(insn) and not trace_to_ip:
+                    # Assuming you have a state `state`
+                    # Force the execution of a 'ret' instruction
+                    ret_proc = angr.SIM_PROCEDURES['stubs']['ReturnUnconstrained']()
+
+                    # Drop the diverged states, they are likely to diverge
+                    simgr.drop(stash='diverged')
+
+                    state.registers.store(arch.ip_reg_name, trace_from_ip)
+                    c.next_branch()
+                    c.diverged = False
+
+                    # Execute the 'ret' instruction
+                    successors = angr_mgr.proj.factory.procedure_engine.process(state, procedure=ret_proc)
+                    simgr.populate('active', successors.successors)
+                    continue
+
 
                 state.registers.store(arch.ip_reg_name, trace_to_ip)
                 c.diverged = False

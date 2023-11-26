@@ -17,12 +17,13 @@ from ftrace import Ftrace
 from prmsg import pr_msg, Pbar
 from simprocedures import CopyProcedure, RetpolineProcedure, ReturnProcedure, ProcedureWrapper, RepHook
 
-userspace_copy_funcs:Set[str] = set()
-#    { 'copy_user_enhanced_fast_string',
+userspace_copy_funcs:Set[str] = {
+#    'copy_user_enhanced_fast_string',
 #    'copy_user_generic_string',
 #    'copy_user_generic_unrolled',
 #    '_copy_from_user'
-#}
+    '_copy_to_user',
+}
 
 direct_sym_libc_hooks = {
     'memcpy', 'memcmp', 'strcpy', 'strstr', 'strlen', #'strcmp',
@@ -740,3 +741,7 @@ class Angr:
             assert call_insn is not None
             ret_addr = self.next_insn_addr(call_insn)
         return ret_addr
+
+    def return_reg_name(self) -> str:
+        cc = self.proj.factory.cc()
+        return cc.RETURN_VAL.reg_name

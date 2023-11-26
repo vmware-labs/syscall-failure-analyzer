@@ -74,7 +74,7 @@ class CopyProcedure(angr.SimProcedure):
         track_to_ret(self)
         copied = self.state.solver.BVS('copied', 64)
         self.state.add_constraints(copied >= 0)
-            
+
         if False and 'unconstrained' in str(limit):
             old_limit = limit
             limit = self.state.solver.BVS('limit', arch.address_width)
@@ -88,7 +88,7 @@ class CopyProcedure(angr.SimProcedure):
             src_mem = self.state.memory.load(src_addr, copied, endness='Iend_LE')
             self.state.memory.store(dst_addr, src_mem, size=copied, endness='Iend_LE')
 
-        self.ret(limit - copied)
+        return self.ret(limit - copied)
 
     def __rept__(self) -> str:
         return 'CopyProcedure'
