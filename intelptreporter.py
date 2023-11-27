@@ -447,7 +447,6 @@ class IntelPTReporter(Reporter):
         if len(enter_entry_idxs) == 0:
             return None
         enter_entry_idx = enter_entry_idxs[-1]
-
        
         # We still need to get rid of all unemulated code at the beginning of the trace.
         # As a hueristic, which might only fit x86-64, we will look for a call from

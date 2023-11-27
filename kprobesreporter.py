@@ -152,8 +152,10 @@ class KprobesReporter(Reporter):
                 if arch.is_cond_jmp_taken(insn, state):
                     target_insn = self.angr_mgr.get_branch_target_insn(insn)
                     assert(target_insn is not None)
+                    pr_msg(f"taken branch: {insn} -> {target_insn}", level="DEBUG")
                 else:
                     insn = self.angr_mgr.next_insn(insn)
+                    pr_msg(f"not taken branch: {insn}", level="DEBUG")
             elif arch.is_loop_insn(insn):
                 assert state is not None
 

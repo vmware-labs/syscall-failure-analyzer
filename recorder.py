@@ -66,6 +66,11 @@ class Recorder:
                                 kcore = kcore,
                                 saved_segs = None)
 
+        # Need to massage some syscall names to match those in ftrace
+        self.syscall_special_event : Dict[str, str] = {
+            'sendfile': 'sendfile64',
+        }
+
     def detach_all_processes(self):
         if self.dbg is None:
             return
@@ -177,6 +182,9 @@ class Recorder:
         if self.syscall_filter is not None:
             syscall_name = SYSCALL_NAMES.get(self.syscall_filter, None)
             if syscall_name is not None:
+                if syscall_name in self.syscall_special_event:
+                    syscall_name = self.syscall_special_event[syscall_name]
+
                 e_class, e_subclass = 'syscalls', f'sys_{enter_or_exit}_{syscall_name}'
             else:
                 filter += f'&&id=={self.syscall_filter}'
